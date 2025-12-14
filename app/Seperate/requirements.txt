@@ -1,0 +1,20 @@
+# python==3.10 Transcribe env
+
+--extra-index-url https://download.pytorch.org/whl/cu121
+torch==2.5.1+cu121
+torchaudio==2.5.1+cu121
+# Transcription
+numpy
+librosa
+soundfile
+pretty_midi
+tqdm
+fastapi
+uvicorn[standard]
+python-multipart
+music21
+# Seperate 
+pyyaml
+einops
+# arrangement
+mido

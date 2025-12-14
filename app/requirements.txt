@@ -1,0 +1,23 @@
+# Python 3.10 버전의 Transcribe 환경
+--extra-index-url https://download.pytorch.org/whl/cu121
+torch==2.5.1+cu121
+torchaudio==2.5.1+cu121
+
+# Transcription 관련 라이브러리들
+numpy
+librosa
+soundfile
+pretty_midi
+tqdm
+fastapi
+uvicorn[standard]
+python-multipart
+music21
+
+# Seperate 관련 라이브러리들
+pyyaml
+einops
+
+# Arrangement 관련 라이브러리들
+mido
+scipy

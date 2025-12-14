@@ -1,0 +1,530 @@
+:root {
+  --bg: #0b0c10;
+  --card: rgba(255, 255, 255, 0.055);
+  --card2: rgba(255, 255, 255, 0.08);
+  --text: rgba(255, 255, 255, 0.92);
+  --muted: rgba(255, 255, 255, 0.68);
+  --line: rgba(255, 255, 255, 0.12);
+
+  /* ✅ 섹션별 포인트 컬러 (한 단계 더 소프트) */
+  /* HERO: 보라 + 분홍 */
+  --c-hero-a: rgba(167, 89, 255, 0.24); /* 0.30 → 0.24 */
+  --c-hero-b: rgba(255, 90, 205, 0.18); /* 0.24 → 0.18 */
+
+  /* TRANSCRIBE: 파랑 + 민트 */
+  --c-trans-a: rgba(70, 140, 255, 0.26); /* 0.32 → 0.26 */
+  --c-trans-b: rgba(60, 255, 210, 0.18); /* 0.22 → 0.18 */
+
+  /* SEPARATE: 갈색 + 노랑 */
+  --c-sep-a: rgba(180, 110, 60, 0.20);  /* 0.26 → 0.20 */
+  --c-sep-b: rgba(255, 220, 80, 0.15);  /* 0.20 → 0.15 */
+
+  /* ARRANGE: 주황 + 빨강 */
+  --c-arr-a: rgba(255, 140, 40, 0.24);  /* 0.30 → 0.24 */
+  --c-arr-b: rgba(255, 70, 70, 0.18);   /* 0.22 → 0.18 */
+}
+
+
+html,
+body {
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  margin: 0;
+  background: var(--bg); /* ✅ 배경은 고정 레이어가 담당 */
+  color: var(--text);
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, "Noto Sans KR", sans-serif;
+  overflow: hidden;
+}
+
+/* Quickbar */
+.quickbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 56px;
+  display: grid;
+  grid-template-columns: 220px 1fr 120px;
+  align-items: center;
+  padding: 0 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.10);
+  background: rgba(10, 10, 14, 0.52);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  z-index: 10;
+}
+
+.brand {
+  font-weight: 900;
+  cursor: pointer;
+  user-select: none;
+  opacity: 0.95;
+}
+
+.nav {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.navBtn {
+  height: 34px;
+  padding: 0 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text);
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.08s ease;
+}
+
+.navBtn:hover {
+  background: rgba(255, 255, 255, 0.10);
+  border-color: rgba(255, 255, 255, 0.18);
+  transform: translateY(-1px);
+}
+
+.navBtn:active {
+  transform: translateY(0px);
+}
+
+.navBtn.active {
+  background: rgba(120, 150, 255, 0.20);
+  border-color: rgba(120, 150, 255, 0.30);
+}
+
+.rightSlot {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.navBtn.pill {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+/* Scroll snap container */
+.snapContainer {
+  position: fixed;
+  top: 56px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  overflow-y: auto;
+  scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
+
+  /* ✅ 배경 레이어/컨텐츠 레이어 분리 */
+  isolation: isolate;
+}
+
+/* ✅ 고정 배경 스테이지: 섹션 경계 제거의 핵심 */
+.bgStage{
+  position: fixed;
+  top: 56px;     /* quickbar 아래부터 */
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+@media (max-width: 900px){
+  .bgStage{ top: 64px; }
+}
+
+/* 모든 배경 레이어 공통 */
+.bgLayer {
+  position: absolute;
+  inset: -6%;
+  opacity: 0;
+  transition: opacity 850ms ease;
+  filter: blur(14px);      /* 더 부드럽게 */
+  transform: scale(1.10);  /* 이음매 방지 */
+}
+
+/* 켜진 레이어만 표시 */
+.bgLayer.on {
+  opacity: 1;
+}
+
+/* HERO: 보라/분홍 */
+.bgLayer.hero {
+  background:
+    radial-gradient(1250px 820px at 18% 18%, var(--c-hero-a), transparent 80%),
+    radial-gradient(1050px 760px at 86% 72%, var(--c-hero-b), transparent 78%),
+    radial-gradient(1500px 980px at 50% 50%, rgba(255, 255, 255, 0.05), transparent 84%),
+    linear-gradient(180deg, rgba(167, 89, 255, 0.09), transparent 72%);
+}
+
+/* TRANSCRIBE: 파랑/민트 */
+.bgLayer.trans {
+  background:
+    radial-gradient(1250px 820px at 18% 22%, var(--c-trans-a), transparent 80%),
+    radial-gradient(1050px 760px at 86% 78%, var(--c-trans-b), transparent 78%),
+    radial-gradient(1500px 980px at 50% 50%, rgba(255, 255, 255, 0.05), transparent 84%),
+    linear-gradient(180deg, rgba(70, 140, 255, 0.09), transparent 72%);
+}
+
+/* SEPARATE: 갈색/노랑 */
+.bgLayer.sep {
+  background:
+    radial-gradient(1250px 820px at 20% 18%, var(--c-sep-a), transparent 80%),
+    radial-gradient(1050px 760px at 86% 78%, var(--c-sep-b), transparent 78%),
+    radial-gradient(1500px 980px at 50% 50%, rgba(255, 255, 255, 0.05), transparent 84%),
+    linear-gradient(180deg, rgba(255, 220, 80, 0.085), transparent 72%);
+}
+
+/* ARRANGE: 주황/빨강 */
+.bgLayer.arr {
+  background:
+    radial-gradient(1250px 820px at 22% 20%, var(--c-arr-a), transparent 80%),
+    radial-gradient(1050px 760px at 86% 78%, var(--c-arr-b), transparent 78%),
+    radial-gradient(1500px 980px at 50% 50%, rgba(255, 255, 255, 0.05), transparent 84%),
+    linear-gradient(180deg, rgba(255, 70, 70, 0.085), transparent 72%);
+}
+
+/* Sections */
+.snapSection {
+  height: calc(100vh - 56px);
+  scroll-snap-align: start;
+  padding: 24px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  position: relative;
+  z-index: 1; /* ✅ 배경 위로 */
+}
+
+.sectionInner {
+  width: min(1320px, 100%);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  padding: 20px;
+
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  border-radius: 18px;
+  background: var(--card);
+  box-shadow: 0 18px 60px rgba(0, 0, 0, 0.35);
+}
+
+/* ✅ 카드 glow: 넓고 약하게 */
+#transcribe .sectionInner {
+  box-shadow:
+    0 18px 60px rgba(0, 0, 0, 0.35),
+    0 0 90px rgba(60, 255, 210, 0.06);
+}
+
+#separate .sectionInner {
+  box-shadow:
+    0 18px 60px rgba(0, 0, 0, 0.35),
+    0 0 90px rgba(255, 220, 80, 0.06);
+}
+
+#arrange .sectionInner {
+  box-shadow:
+    0 18px 60px rgba(0, 0, 0, 0.35),
+    0 0 90px rgba(255, 70, 70, 0.06);
+}
+
+.left {
+  display: grid;
+  gap: 10px;
+}
+
+.right {
+  display: grid;
+  gap: 8px;
+  align-content: start;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  height: 26px;
+  padding: 0 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.06);
+  width: fit-content;
+  font-weight: 700;
+  color: var(--muted);
+}
+
+.h1 {
+  margin: 0;
+  font-size: 44px;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+
+.p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+.ul {
+  margin: 6px 0 0;
+  padding-left: 18px;
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.li {
+  margin: 6px 0;
+}
+
+.ctaRow {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+
+.btn {
+  height: 40px;
+  padding: 0 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.10);
+  color: var(--text);
+  cursor: pointer;
+  font-weight: 800;
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.08s ease;
+}
+
+.btn:hover {
+  background: rgba(255, 255, 255, 0.14);
+  border-color: rgba(255, 255, 255, 0.18);
+  transform: translateY(-1px);
+}
+
+.btn:active {
+  transform: translateY(0px);
+}
+
+.btn.ghost {
+  background: transparent;
+}
+
+.btn.disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Hero */
+.hero .heroInner {
+  width: min(1120px, 100%);
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 18px;
+  align-items: stretch;
+}
+
+.heroText {
+  padding: 22px;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  border-radius: 18px;
+  background: var(--card);
+  box-shadow: 0 18px 60px rgba(0, 0, 0, 0.35);
+  display: grid;
+  gap: 12px;
+}
+
+.heroTitle {
+  margin: 0;
+  font-size: 56px;
+  line-height: 1.03;
+  letter-spacing: -0.03em;
+}
+
+.heroSub {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.hint {
+  margin-top: 10px;
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 13px;
+}
+
+.heroCard {
+  padding: 22px;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  border-radius: 18px;
+  background: var(--card2);
+  box-shadow: 0 18px 60px rgba(0, 0, 0, 0.35);
+  display: grid;
+  gap: 12px;
+}
+
+.cardTitle {
+  font-weight: 900;
+  opacity: 0.9;
+}
+
+.cardGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.miniCard {
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  border-radius: 14px;
+  background: rgba(0, 0, 0, 0.18);
+  padding: 12px;
+}
+
+.miniTitle {
+  font-weight: 900;
+}
+
+.miniDesc {
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+/* YouTube */
+.ytWrap {
+  width: 100%;
+  aspect-ratio: 16/9;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  background: rgba(0, 0, 0, 0.25);
+}
+
+.yt {
+  width: 100%;
+  height: 100%;
+}
+
+.ytCaption {
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 12px;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .quickbar {
+    grid-template-columns: 1fr 1fr;
+    height: 64px;
+    row-gap: 8px;
+    padding: 8px 14px;
+  }
+  .rightSlot {
+    display: none;
+  }
+  .sectionInner {
+    grid-template-columns: 1fr;
+  }
+  .hero .heroInner {
+    grid-template-columns: 1fr;
+  }
+  .h1 {
+    font-size: 38px;
+  }
+  .heroTitle {
+    font-size: 44px;
+  }
+  .snapContainer {
+    top: 64px;
+  }
+  .snapSection {
+    height: calc(100vh - 64px);
+    padding: 20px;
+  }
+}
+
+/* Modal */
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  z-index: 50;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+}
+
+.modalPanel {
+  width: min(1180px, 100%);
+  height: min(92vh, 980px);
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(12, 12, 16, 0.92);
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.55);
+  overflow: hidden;
+  display: grid;
+  grid-template-rows: 56px 1fr;
+}
+
+.modalTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.10);
+}
+
+.modalTitle {
+  font-weight: 900;
+  opacity: 0.95;
+}
+
+.modalBody {
+  overflow: auto;
+}
+
+.audio-player-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+.audio-player-container > .audio-player {
+  width: 45%; /* 각 음원의 너비 */
+}
+
+.audio-player-container-3 {
+  display: flex;
+  flex-wrap: wrap; /* 음원들이 자동으로 2줄로 배치될 수 있도록 설정 */
+  justify-content: center;
+  gap: 20px; /* 음원 사이의 간격 설정 */
+}
+
+.audio-player-container-3 > .audio-player {
+  width: 45%; /* 음원의 너비를 45%로 설정 */
+  margin: 0 auto; /* 가운데 정렬 */
+}
+
+.audio-player {
+  max-width: 60%; /* 플레이어의 최대 너비를 90%로 제한 */
+  margin: 0 auto;  /* 가운데 정렬 */
+}
+
+.audio-player-container-3 > .audio-player:nth-child(3) {
+  width: 50%; /* 3번째 음원의 너비를 조금 넓게 설정하여 가운데 정렬 */
+}
+
+.musescore-info {
+  margin-top: 10px;
+  font-size: 12px;
+  color: var(--muted);
+  text-align: right;
+  opacity: 0.7;
+}

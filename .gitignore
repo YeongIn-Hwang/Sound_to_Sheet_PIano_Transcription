@@ -1,0 +1,5 @@
+# 제외할 폴더 목록
+Dataset/
+record/
+sound_to_sheet_web/node_modules/
+sound_to_sheet_web/dist/
