@@ -1,4 +1,6 @@
-const API_BASE = import.meta.env.VITE_API_BASE;
+const API_BASE = "https://runpod-proxy-server.onrender.com"
+VITE_API_BASE = "https://runpod-proxy-server.onrender.com"
+
 /**
  * WAV/MP3/etc -> MIDI
  */
