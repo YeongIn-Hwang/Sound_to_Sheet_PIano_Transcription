@@ -8,10 +8,11 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "start": "vite preview" 
+    "start": "vite preview"
   },
   "dependencies": {
     "@tonejs/midi": "^2.0.28",
+    "axios": "^1.13.2",
     "html2canvas": "^1.4.1",
     "opensheetmusicdisplay": "^1.9.3",
     "react": "^19.2.0",
