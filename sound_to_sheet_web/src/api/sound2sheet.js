@@ -1,5 +1,4 @@
-const API_BASE = "https://runpod-proxy-server.onrender.com"
-VITE_API_BASE = "https://runpod-proxy-server.onrender.com"
+const API_BASE = "https://runpod-proxy-server.onrender.com";
 
 /**
  * WAV/MP3/etc -> MIDI
