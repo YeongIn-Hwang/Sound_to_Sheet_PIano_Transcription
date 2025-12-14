@@ -46,7 +46,7 @@ class AccompService:
         self.model = AccompHybridUNet().to(self.device)
 
         # ✅ 경고 방지: weights_only=True (state_dict만 로드하는 용도)
-        state = torch.load(cfg.ckpt_path, map_location=self.device, weights_only=True)
+        state = torch.load(cfg.ckpt_path, map_location=self.device)
         if isinstance(state, dict) and "model_state_dict" in state:
             self.model.load_state_dict(state["model_state_dict"], strict=True)
         else:
