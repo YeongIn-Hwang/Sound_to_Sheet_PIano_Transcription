@@ -544,3 +544,12 @@ async def arrangement_midi(
         print(f"[ARR] ERROR after {dt:.2f}s: {repr(e)}", flush=True)
         traceback.print_exc()
         raise HTTPException(status_code=500, detail=str(e))
+    
+@app.get("/ping")
+def ping():
+    # RunPod LB health check용: 최대한 가볍게 200만
+    return Response(status_code=200)
+
+@app.get("/health")
+def health():
+    return {"ok": True, "device": str(DEVICE)}
