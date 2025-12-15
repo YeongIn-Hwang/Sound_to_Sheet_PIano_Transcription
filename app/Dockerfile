@@ -10,9 +10,8 @@ ENV PYTHONPATH=/app
 # 의존성 파일 복사
 COPY requirements.txt .
 
-# PyTorch와 torchaudio 설치를 위한 추가 인덱스 URL 사용
-RUN pip install --no-cache-dir --upgrade pip && \
-    pip install --no-cache-dir -r requirements.txt
+# PyTorch와 torchaudio 설치를 위한 추가 인덱스 URL 사용 (한 줄로 합침)
+RUN pip install --no-cache-dir --upgrade pip && pip install --no-cache-dir -r requirements.txt --extra-index-url https://download.pytorch.org/whl/cu121
 
 # 나머지 코드 복사
 COPY . .
