@@ -31,10 +31,15 @@ export default function ArrangeWorkspace() {
     if (!file) return;
     setError("");
     resetOutputs();
+
     setIsRunning(true);
 
+    // ✅ 오버레이 먼저 렌더링되도록 “한 프레임 양보”
+    await new Promise(requestAnimationFrame);
+    // ✅ 추가로 이벤트루프 한 번 양보 (동기 작업 시작 전에 UI flush)
+    await new Promise((r) => setTimeout(r, 0));
+
     try {
-      // keep_original=true: 원본 MIDI 트랙 유지 + 반주 트랙 추가
       const blob = await arrangeMidi(file, { keepOriginal: true });
       setOutBlob(blob);
     } catch (e) {
@@ -347,6 +352,65 @@ const css = `
 .cardHint b {
   font-weight: 700;
 }
+
+/* ===== Loading overlay ===== */
+.overlay{
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.55);
+  display: grid;
+  place-items: center;
+  z-index: 9999;
+  padding: 18px;
+}
+
+.overlayCard{
+  width: min(520px, 100%);
+  background: rgba(16, 10, 12, .92);
+  border: 1px solid rgba(255,0,0,.22);
+  border-radius: 18px;
+  box-shadow: 0 30px 90px rgba(0,0,0,.60), 0 0 50px rgba(255,0,0,.08);
+  padding: 16px 16px 14px;
+  backdrop-filter: blur(10px);
+}
+
+.overlayTitle{ font-weight: 850; font-size: 14px; opacity: .95; }
+.overlayText{ margin-top: 6px; font-size: 13px; color: rgba(255,255,255,.70); }
+
+.bar{
+  margin-top: 12px;
+  height: 10px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.08);
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,.10);
+}
+.barFill{
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(255,0,0,.85), rgba(200,0,0,.85));
+  transition: width .25s ease;
+}
+
+.overlayMeta{
+  margin-top: 10px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  font-size: 12px;
+  color: rgba(255,255,255,.60);
+}
+
+.spinner{
+  width: 12px;
+  height: 12px;
+  border-radius: 999px;
+  border: 2px solid rgba(255,255,255,.25);
+  border-top-color: rgba(255,0,0,.95);
+  animation: spin .9s linear infinite;
+}
+
+@keyframes spin{ to { transform: rotate(360deg); } }
 `;
 
 
