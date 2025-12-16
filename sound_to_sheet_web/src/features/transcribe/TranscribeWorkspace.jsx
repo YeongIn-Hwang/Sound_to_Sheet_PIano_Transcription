@@ -33,7 +33,7 @@ export default function Home() {
   const scoreTitle = file ? file.name.replace(/\.[^/.]+$/, "") : "";
 
   // Home.jsx 안 (컴포넌트 밖/안 아무데나 OK)
-  const ACCEPT_EXT = ["wav", "mp3", "flac", "m4a", "ogg"];
+  const ACCEPT_EXT = ["wav", "mp3", "flac"];
   const MAX_MB = 40;          // 원하는 값으로
   const MAX_SEC = 12 * 60;    // 12분
 

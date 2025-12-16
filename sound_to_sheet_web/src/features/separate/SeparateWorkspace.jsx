@@ -27,7 +27,7 @@ export default function SeparateWorkspace() {
   const [curTime, setCurTime] = useState(0);
   const [duration, setDuration] = useState(0);
 
-  const ACCEPT_EXT = ["wav", "mp3", "flac", "m4a", "ogg"];
+  const ACCEPT_EXT = ["wav", "mp3", "flac"];
   const MAX_MB = 80;
   const MAX_SEC = 15 * 60;
 
