@@ -1,6 +1,6 @@
 import { useId, useRef, useState } from "react";
 
-const ACCEPT = ".wav,.mp3,.flac,.m4a,.ogg";
+const ACCEPT = ".wav,.mp3,.flac";
 
 export default function FilePicker({ onPick }) {
   const inputId = useId();
