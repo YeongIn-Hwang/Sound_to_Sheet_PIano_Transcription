@@ -12,9 +12,13 @@ No additional installation is required — everything runs directly in your web 
 ---
 
 ## ⏰ Service Availability
-- **Operating Hours**: **09:00 AM – 10:00 PM (KST)**
+- **Operating Hours**: **None**
 - Requests may be limited outside operating hours to protect server resources.
+- Due to budgetary constraints, we are not currently operating a dedicated GPU server. As a result, certain components of the system may not be fully functional at all times.
 
+- If you require access to the system, please contact us in advance to coordinate availability during the necessary time period.
+
+- For inquiries, please reach out to: **hyi8402@gmail.com**
 ---
 
 ## 🚀 How to Use
@@ -50,7 +54,7 @@ No additional installation is required — everything runs directly in your web 
 - **Backend**: FastAPI  
 - **AI Models**
   - Piano Transcription (Onsets & Frames / HRPlus-based)
-  - Audio Source Separation (U-Net / Demucs-based)
+  - Audio Source Separation (U-Net / Demucs-based), MDX
   - MIDI Arrangement (Transformer-based)
 
 ---
